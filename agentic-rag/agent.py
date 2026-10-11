@@ -11,7 +11,6 @@ llm = ChatGroq(
     temperature=0
 )
 
-
 prompt = ChatPromptTemplate.from_template("""
 You are a Campus Information Assistant.
 
@@ -25,24 +24,17 @@ Rules:
 4. Give a concise answer.
 5. Give a confidence level: High, Medium, or Low.
 
-Context:
-{context}
+Context: {context}
 
-Student Question:
-{question}
+Student Question: {question}
 
 Return your response in this format:
 
-Answer:
-<answer>
+Answer: <answer>
 
-Confidence:
-<High/Medium/Low>
-""")
-
+Confidence: <High/Medium/Low> """)
 
 def ask_question(question):
-
     docs = retriever.invoke(question)
 
     context = "\n\n".join(
@@ -60,36 +52,50 @@ def ask_question(question):
 
     return response.content, docs
 
-
 if __name__ == "__main__":
-
-    print("=" * 60)
+    print("\n=" * 60)
     print("       CAMPUS INFORMATION RAG AGENT")
     print("=" * 60)
 
-    question = input("\nStudent: ")
+    print("\nExample questions:")
+    print("1. What is the minimum attendance required?")
+    print("2. Are smart watches allowed in examinations?")
+    print("\nType 'exit' to stop.")
 
-    answer, docs = ask_question(question)
+    while True:
+        question = input("\nStudent: ").strip()
 
-    print("\n" + "=" * 60)
-    print("ANSWER")
-    print("=" * 60)
+        if question.lower() in ("exit", "quit"):
+            print("\nCampus Information Agent stopped.")
+            break
 
-    print(answer)
+        if not question:
+            print("Please enter a question.")
+            continue
 
-    print("\n" + "=" * 60)
-    print("REFERENCE SNIPPETS")
-    print("=" * 60)
+        try:
+            answer, docs = ask_question(question)
 
-    seen = set()
+            print("\n" + "=" * 60)
+            print("ANSWER")
+            print("=" * 60)
+            print(answer)
 
-    for doc in docs:
+            print("\n" + "=" * 60)
+            print("REFERENCE SNIPPETS")
+            print("=" * 60)
 
-        source = doc.metadata.get("source")
+            seen = set()
 
-        if source not in seen:
+            for doc in docs:
+                source = doc.metadata.get("source")
+                content = doc.page_content
+                key = (source, content)
 
-            print(f"\n[{source}]")
-            print(doc.page_content)
+                if key not in seen:
+                    print(f"\n[{source}]")
+                    print(content)
+                    seen.add(key)
 
-            seen.add(source)
+        except Exception as e:
+            print(f"Error processing question: {e}")

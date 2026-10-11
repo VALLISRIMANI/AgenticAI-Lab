@@ -16,16 +16,13 @@ retriever = vectorstore.as_retriever(
     search_kwargs={"k": 4}
 )
 
-query = "What is the minimum attendance required?"
 
-docs = retriever.invoke(query)
+# Run this test only when retriever.py is executed directly
+if __name__ == "__main__":
+    query = input("Enter a test query: ")
+    docs = retriever.invoke(query)
 
-print("\n" + "=" * 60)
-print("RETRIEVAL RESULTS")
-print("=" * 60)
-
-for i, doc in enumerate(docs, 1):
-    print(f"\n--- Result {i} ---")
-    print("Source:", doc.metadata.get("source"))
-    print("Content:")
-    print(doc.page_content)
+    for i, doc in enumerate(docs, 1):
+        print(f"\n--- Result {i} ---")
+        print("Source:", doc.metadata.get("source"))
+        print(doc.page_content)

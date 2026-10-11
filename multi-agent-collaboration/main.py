@@ -16,7 +16,7 @@ research_prompt = ChatPromptTemplate.from_messages([
     (
         "system",
         """You are a Research Agent.
-        Analyze the user's topic and generate 5-7
+        Analyze the user's topic and generate 2-5
         relevant, concise bullet points.
         Focus on important facts and key ideas.
         Do not write a long explanation."""
