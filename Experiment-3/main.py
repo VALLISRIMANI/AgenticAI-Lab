@@ -27,7 +27,7 @@ if not os.getenv("GROQ_API_KEY"):
 # 2. Load PDF
 # =========================================================
 
-PDF_PATH = r"C:\Users\manig\OneDrive\Desktop\AgenticAI\retrieval-agent-using-langchain\VII SEMESTER COURSE STRUCTURE AND SYLLABUS_CSE & CST_V23 Regulation.pdf"
+PDF_PATH = r"C:\Users\manig\OneDrive\Desktop\23A81A0522-AgenticAI\Experiment-3\VII SEMESTER COURSE STRUCTURE AND SYLLABUS_CSE & CST_V23 Regulation.pdf"
 
 print("\nLoading document...")
 

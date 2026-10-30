@@ -53,7 +53,7 @@ def ask_question(question):
     return response.content, docs
 
 if __name__ == "__main__":
-    print("\n=" * 60)
+    print("=" * 60)
     print("       CAMPUS INFORMATION RAG AGENT")
     print("=" * 60)
 
@@ -76,7 +76,7 @@ if __name__ == "__main__":
         try:
             answer, docs = ask_question(question)
 
-            print("\n" + "=" * 60)
+            print("=" * 60)
             print("ANSWER")
             print("=" * 60)
             print(answer)
