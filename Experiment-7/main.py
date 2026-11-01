@@ -63,7 +63,7 @@ def weather_agent():
         query = input("\nYou: ").strip()
 
         if query.lower() == "exit":
-            print("\nAgent stopped.")
+            print("Agent stopped.")
             break
 
         if not query:
@@ -86,12 +86,9 @@ def weather_agent():
             print("[Agent] Generating response...")
             answer = explain_weather(location["name"], weather)
 
-            print("\n" + "-" * 50)
-            print("Weather Report")
-            print("-" * 50)
+            print("\nWeather Report")
             print("City:", location["name"])
             print(answer)
-            print("-" * 50)
 
         except requests.exceptions.RequestException as e:
             print("API connection error:", e)

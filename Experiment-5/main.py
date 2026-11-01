@@ -56,14 +56,9 @@ def main():
 
         try:
             answer, docs = ask_question(question)
-            print("\n" + "-" * 50)
-            print("ANSWER")
-            print("-" * 50)
             print(answer)
 
-            print("\n" + "-" * 50)
-            print("REFERENCE SNIPPETS")
-            print("-" * 50)
+            print("\nREFERENCE SNIPPETS:")
 
             seen = set()
             for doc in docs:
