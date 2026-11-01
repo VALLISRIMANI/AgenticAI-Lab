@@ -3,26 +3,31 @@ from langchain_chroma import Chroma
 
 VECTORSTORE_DIR = "vectorstore"
 
-embeddings = HuggingFaceEmbeddings(
-    model_name="sentence-transformers/all-MiniLM-L6-v2"
-)
+embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
 
-vectorstore = Chroma(
-    persist_directory=VECTORSTORE_DIR,
-    embedding_function=embeddings
-)
+vectorstore = Chroma(persist_directory=VECTORSTORE_DIR, embedding_function=embeddings)
 
-retriever = vectorstore.as_retriever(
-    search_kwargs={"k": 4}
-)
+retriever = vectorstore.as_retriever(search_kwargs={"k": 4})
 
+def main():
+    print("\n" + "-" * 50)
+    print("       CAMPUS DOCUMENT RETRIEVER")
+    print("-" * 50)
 
-# Run this test only when retriever.py is executed directly
-if __name__ == "__main__":
-    query = input("Enter a test query: ")
+    query = input("\nEnter a test query: ").strip()
+
+    if not query:
+        print("Please enter a query.")
+        return
+
     docs = retriever.invoke(query)
 
     for i, doc in enumerate(docs, 1):
-        print(f"\n--- Result {i} ---")
+        print("\n" + "-" * 50)
+        print(f"Result {i}")
+        print("-" * 50)
         print("Source:", doc.metadata.get("source"))
         print(doc.page_content)
+
+if __name__ == "__main__":
+    main()

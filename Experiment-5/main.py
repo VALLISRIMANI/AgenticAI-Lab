@@ -1,19 +1,14 @@
 from dotenv import load_dotenv
-
 load_dotenv()
 
 from langchain_groq import ChatGroq
 from langchain_core.prompts import ChatPromptTemplate
 from retriever import retriever
 
-llm = ChatGroq(
-    model="openai/gpt-oss-20b",
-    temperature=0
-)
+llm = ChatGroq(model="openai/gpt-oss-20b", temperature=0)
 
 prompt = ChatPromptTemplate.from_template("""
 You are a Campus Information Assistant.
-
 Answer the student's question ONLY using the provided context.
 
 Rules:
@@ -29,34 +24,20 @@ Context: {context}
 Student Question: {question}
 
 Return your response in this format:
-
 Answer: <answer>
-
-Confidence: <High/Medium/Low> """)
+Confidence: <High/Medium/Low>
+""")
 
 def ask_question(question):
     docs = retriever.invoke(question)
-
-    context = "\n\n".join(
-        f"[Source: {doc.metadata.get('source')}]\n"
-        f"{doc.page_content}"
-        for doc in docs
-    )
-
-    response = llm.invoke(
-        prompt.format(
-            question=question,
-            context=context
-        )
-    )
-
+    context = "\n\n".join(f"[Source: {doc.metadata.get('source')}]\n{doc.page_content}" for doc in docs)
+    response = llm.invoke(prompt.format(question=question, context=context))
     return response.content, docs
 
-if __name__ == "__main__":
-    print("=" * 60)
+def main():
+    print("\n" + "-" * 50)
     print("       CAMPUS INFORMATION RAG AGENT")
-    print("=" * 60)
-
+    print("-" * 50)
     print("\nExample questions:")
     print("1. What is the minimum attendance required?")
     print("2. Are smart watches allowed in examinations?")
@@ -75,18 +56,16 @@ if __name__ == "__main__":
 
         try:
             answer, docs = ask_question(question)
-
-            print("=" * 60)
+            print("\n" + "-" * 50)
             print("ANSWER")
-            print("=" * 60)
+            print("-" * 50)
             print(answer)
 
-            print("\n" + "=" * 60)
+            print("\n" + "-" * 50)
             print("REFERENCE SNIPPETS")
-            print("=" * 60)
+            print("-" * 50)
 
             seen = set()
-
             for doc in docs:
                 source = doc.metadata.get("source")
                 content = doc.page_content
@@ -99,3 +78,6 @@ if __name__ == "__main__":
 
         except Exception as e:
             print(f"Error processing question: {e}")
+
+if __name__ == "__main__":
+    main()
